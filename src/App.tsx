@@ -1,24 +1,21 @@
-import { useState } from 'react'
 import './App.css'
 
-import ChatView from './components/ChatView'
+import ChatContainerView from './components/ChatContainerView'
 import MenuView from './components/MenuView'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
       <div className='m-0 
       p-0 
       w-screen 
       h-screen 
-      static 
-      md:flex 
+      flex 
       justify-evenly 
       align-center'>
-        <MenuView/>
-        <ChatView/>
-        <div className="absolute
+        {/* <MenuView/> */}
+        <ChatContainerView/>
+        {/* <div className="absolute
         lg:relative 
         z-10 
         lg:z-0 
@@ -32,7 +29,7 @@ function App() {
         justify-center 
         items-end 
         border-2 
-        bg-black"></div>
+        bg-black"></div> */}
       </div>
   );
 }
