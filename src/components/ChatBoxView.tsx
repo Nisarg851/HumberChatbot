@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ChatBoxView = (props) => {
+const ChatBoxView = ({boxOwner, text}) => {
 
     const [messageViewCSS, setMessageViewCSS] = useState({
         user:"\
@@ -18,12 +18,12 @@ const ChatBoxView = (props) => {
         <div className={`
         m-1
         p-3
-        w-[95%]
+        w-fit
         h-fit 
         text-left
         rounded-2xl
-        ${messageViewCSS[props.boxOwner]}`}>
-            {props.text}
+        ${messageViewCSS[boxOwner]}`}>
+            {text}
         </div>
     );
 }
