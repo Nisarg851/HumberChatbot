@@ -12,10 +12,11 @@ function App() {
       h-screen 
       flex 
       justify-center 
-      align-center'>
-        <MenuView/>
+      align-center
+      bg-black'>
+        {/* <MenuView/> */}
         <ChatContainerView/>
-        <div className="
+        {/* <div className="
         hidden
         lg:absolute 
         lg:block
@@ -24,7 +25,7 @@ function App() {
         right-0 
         w-fit
         h-fit 
-        bg-black"></div>
+        bg-black"></div> */}
       </div>
   );
 }

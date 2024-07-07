@@ -11,7 +11,10 @@ interface TypeChatBox {
 
 const ChatContainerView = () => {
 
-  const [chatLogsState, setChatLogsState] = useState<TypeChatBox[]>([]);
+  const [chatLogsState, setChatLogsState] = useState<TypeChatBox[]>([{
+    boxOwner: "bot",
+    text: "Hi, Before we get started, just know I’m a bot in training, and your questions help me learn! Short, clear phrases work best for me."
+  }]);
 
   const addTextToHistory = useCallback((boxOwner: string, text: string) => {
     setChatLogsState(prevState => [...prevState, {boxOwner, text}]);
@@ -45,11 +48,11 @@ const ChatContainerView = () => {
         w-screen
         lg:w-[50%] 
         h-[100%] 
-        rounded-2xl 
         flex 
         flex-col
         justify-end
-        items-center">
+        items-center
+        bg-white">
           <ChatHeaderView/>
           <ChatView chatLogsState={chatLogsState}/>
           <form onSubmit={(value) => {inputSubmitHandler(value)}} 

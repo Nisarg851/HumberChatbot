@@ -19,7 +19,6 @@ const ChatView = ({chatLogsState}) => {
         h-full
         overflow-auto
         no-scrollbar">
-            
             {
                 chatLogsState.reverse().map((chatBox, index) => {
                     return <ChatBoxView 

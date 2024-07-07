@@ -5,12 +5,14 @@ const ChatBoxView = ({boxOwner, text}) => {
     const [messageViewCSS, setMessageViewCSS] = useState({
         user:"\
         self-end\
-        bg-[#041e41]\
-        text-white\
+        bg-[#fec709]\
+        text-black\
         ",
         bot:"\
         self-start\
         text-black\
+        border-1\
+        border-black\
         "
     });
 
