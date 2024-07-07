@@ -1,4 +1,4 @@
-import { useState, useCallback, FormEvent, useEffect } from "react";
+import { useState, useCallback, FormEvent } from "react";
 import { Input } from "@nextui-org/input"
 import SendIcon from "../assets/send-icon.svg"
 import ChatHeaderView from "./ChatHeaderView";
@@ -8,7 +8,6 @@ interface TypeChatBox {
   boxOwner: string;
   text: string;
 }
-
 
 const ChatContainerView = () => {
 
@@ -41,6 +40,8 @@ const ChatContainerView = () => {
 
     return (
         <div className="
+        pt-1
+        pb-10
         w-screen
         lg:w-[50%] 
         h-[100%] 
@@ -81,12 +82,6 @@ const ChatContainerView = () => {
               placeholder="Ask Hawk..."
             />
           </form>
-          <span className="
-          my-1
-          text-white
-          ">
-            Powered by Humber
-          </span>
         </div>
       );
 }

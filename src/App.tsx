@@ -11,25 +11,20 @@ function App() {
       w-screen 
       h-screen 
       flex 
-      justify-evenly 
+      justify-center 
       align-center'>
-        {/* <MenuView/> */}
+        <MenuView/>
         <ChatContainerView/>
-        {/* <div className="absolute
-        lg:relative 
-        z-10 
-        lg:z-0 
+        <div className="
+        hidden
+        lg:absolute 
+        lg:block
+        z-10  
         top-0 
-        left-0 
-        w-full 
-        lg:w-[25%] 
-        h-full 
-        rounded-2xl 
-        flex 
-        justify-center 
-        items-end 
-        border-2 
-        bg-black"></div> */}
+        right-0 
+        w-fit
+        h-fit 
+        bg-black"></div>
       </div>
   );
 }
