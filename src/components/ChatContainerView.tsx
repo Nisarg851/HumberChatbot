@@ -1,6 +1,7 @@
-import { useState, useCallback, FormEvent } from "react";
+import { useState, useCallback, FormEvent, useRef } from "react";
 import { Input } from "@nextui-org/input"
 import SendIcon from "../assets/send-icon.svg"
+import CrossIcon from "../assets/cross-icon.svg"
 import ChatHeaderView from "./ChatHeaderView";
 import ChatView from "./ChatView";
 
@@ -10,6 +11,8 @@ interface TypeChatBox {
 }
 
 const ChatContainerView = () => {
+
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [chatLogsState, setChatLogsState] = useState<TypeChatBox[]>([{
     boxOwner: "bot",
@@ -31,13 +34,15 @@ const ChatContainerView = () => {
 
     const inputSubmitHandler = useCallback((event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const form = event.target as HTMLFormElement;
+      const form = formRef.current ?? event.target as HTMLFormElement;
       const formValues = Object.fromEntries(new FormData(form));
       const prompt: string = formValues["prompt"] as string;
 
-      addTextToHistory("user", prompt);
-      const response = queryPromptAPI("replace api end point here..."); // Temporary hardcoded response
-      addTextToHistory("bot", response);
+      if(prompt != ""){
+        addTextToHistory("user", prompt);
+        const response = queryPromptAPI("replace api end point here..."); // Temporary hardcoded response
+        addTextToHistory("bot", response);
+      }
       form.reset();
     },[addTextToHistory, queryPromptAPI]);
 
@@ -55,8 +60,15 @@ const ChatContainerView = () => {
         bg-white">
           <ChatHeaderView/>
           <ChatView chatLogsState={chatLogsState}/>
-          <form onSubmit={(value) => {inputSubmitHandler(value)}} 
-          className="w-full h-[8vh] border-2 border-slate-300 rounded-full">
+          <form ref={formRef} onSubmit={(event) => {inputSubmitHandler(event)}} 
+          className="w-[98%] 
+          h-fit 
+          flex 
+          justify-center 
+          items-center 
+          border-2 
+          border-slate-300 
+          rounded-full">
             <Input
               isClearable
               radius="lg"
@@ -64,6 +76,7 @@ const ChatContainerView = () => {
               classNames={{
                 label: "text-black/50 dark:text-white/90",
                 input: [
+                  "h-[8vh]",
                   "text-lg",
                   "text-black/90 dark:text-white/90",
                   "placeholder:text-[1.2rem] \
@@ -71,19 +84,31 @@ const ChatContainerView = () => {
                   dark:placeholder:text-white/60",
                 ],
                 inputWrapper: [
-                  "bg-white",
                   "!cursor-text",
-                  "rounded-full"
+                  "rounded-full",
+                  "overflow-hidden",
+                  "bg-white"
                 ],
               }}
-              endContent={<img src={SendIcon} className="
+              endContent={<img src={CrossIcon}     
+              className="
               m-0
               p-2
               w-[45px]
               bg-[#ffffff00]
-              " alt="send"></img>}
+              " 
+              alt="send"></img>}
               placeholder="Ask Hawk..."
             />
+            <button 
+              type="submit"
+              className="
+                  m-0
+                  p-2
+                  w-[45px]
+                  bg-[#ffffff00]">
+              <img src={SendIcon} alt="send"></img>
+            </button>
           </form>
         </div>
       );

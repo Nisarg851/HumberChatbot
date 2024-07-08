@@ -1,8 +1,6 @@
-import { useState } from "react";
-
 const ChatBoxView = ({boxOwner, text}) => {
 
-    const [messageViewCSS, setMessageViewCSS] = useState({
+    const messageViewCSS = {
         user:"\
         self-end\
         bg-[#fec709]\
@@ -14,13 +12,14 @@ const ChatBoxView = ({boxOwner, text}) => {
         border-1\
         border-black\
         "
-    });
+    };
 
     return (
         <div className={`
         m-1
         p-3
         w-fit
+        max-w-[90%]
         h-fit 
         text-left
         rounded-2xl

@@ -1,7 +1,6 @@
 import './App.css'
 
 import ChatContainerView from './components/ChatContainerView'
-import MenuView from './components/MenuView'
 
 function App() {
 
@@ -14,18 +13,7 @@ function App() {
       justify-center 
       align-center
       bg-black'>
-        {/* <MenuView/> */}
         <ChatContainerView/>
-        {/* <div className="
-        hidden
-        lg:absolute 
-        lg:block
-        z-10  
-        top-0 
-        right-0 
-        w-fit
-        h-fit 
-        bg-black"></div> */}
       </div>
   );
 }
