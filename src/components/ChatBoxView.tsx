@@ -1,6 +1,10 @@
-const ChatBoxView = ({boxOwner, text}) => {
+import { TypeChatBox } from "./ChatContainerView";
 
-    const messageViewCSS = {
+import parse from "react-html-parser";
+
+const ChatBoxView = ((content: TypeChatBox) => {
+
+    const messageViewCSS: { user: string; bot: string; } = {
         user:"\
         self-end\
         bg-[#fec709]\
@@ -14,6 +18,8 @@ const ChatBoxView = ({boxOwner, text}) => {
         "
     };
 
+    console.log(content)
+
     return (
         <div className={`
         m-1
@@ -23,10 +29,26 @@ const ChatBoxView = ({boxOwner, text}) => {
         h-fit 
         text-left
         rounded-2xl
-        ${messageViewCSS[boxOwner]}`}>
-            {text}
+        ${messageViewCSS[content.boxOwner]}`}>
+            <div ></div>
+            {content.text}
+            <ul className="w-full h-fit">
+                {content.links?.map((item, index) => {
+                    return(
+                        <li className="
+                            mx-0
+                            my-1
+                            p-2
+                            rounded-xl
+                            bg-[#041e41]
+                            text-white
+                            underline
+                        "><a href={item}>[{index+1}] {item}</a></li>
+                    );
+                })}
+            </ul>
         </div>
     );
-}
+});
 
 export default ChatBoxView;

@@ -39,7 +39,8 @@ const ChatView = ({chatLogsState}) => {
                     return <ChatBoxView 
                     key={index}
                     boxOwner={chatBox["boxOwner"]}
-                    text={chatBox["text"]}/>
+                    text={chatBox["text"]}
+                    links={chatBox["links"]}/>
                 })
             }
 

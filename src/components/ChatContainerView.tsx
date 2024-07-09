@@ -4,10 +4,15 @@ import SendIcon from "../assets/send-icon.svg"
 import CrossIcon from "../assets/cross-icon.svg"
 import ChatHeaderView from "./ChatHeaderView";
 import ChatView from "./ChatView";
+import axios from "axios";
 
-interface TypeChatBox {
+
+const BASE_URL: string = "http://localhost:5000"
+
+export interface TypeChatBox {
   boxOwner: string;
   text: string;
+  links?: Array<string>;
 }
 
 const ChatContainerView = () => {
@@ -19,30 +24,31 @@ const ChatContainerView = () => {
     text: "Hi, Before we get started, just know I’m a bot in training, and your questions help me learn! Short, clear phrases work best for me."
   }]);
 
-  const addTextToHistory = useCallback((boxOwner: string, text: string) => {
-    setChatLogsState(prevState => [...prevState, {boxOwner, text}]);
+  const addTextToHistory = useCallback((content: TypeChatBox) => {
+    console.log("addTextToHistory:", content)
+    setChatLogsState(prevState => [...prevState, content]);
   },[]);
 
-  const queryPromptAPI = useCallback((endpoint: string)=>{
-      const tempResponse: string = endpoint + "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Rerum totam eos animi debitis, sunt eligendi quam soluta, vel molestias veritatis atque? Maiores sed dignissimos asperiores saepe facere inventore architecto, praesentium dolore tenetur incidunt rerum ratione impedit commodi consequuntur! Alias quo quibusdam error aliquam praesentium rerum dolorum. Repellendus autem obcaecati deserunt id quaerat alias ea blanditiis, aliquam sequi vero. Numquam rerum placeat pariatur aperiam magni perspiciatis hic voluptates! Dignissimos ipsa eos sapiente, non recusandae officia sint ratione velit! Officia doloribus itaque dignissimos eaque nesciunt ex maxime magni quasi voluptatem adipisci nam, et hic illo eos soluta dolor. Voluptatum mollitia iure alias.";
-
-      const start = Math.floor(Math.random() * tempResponse.length);
-      const length = Math.floor(Math.random() * tempResponse.length - start);
-
-      return tempResponse.substring(start, start+length);
+  const queryPromptAPI = useCallback(async (prompt: string)=>{
+      const response = await axios.post(`${BASE_URL}/get-query-result`,{
+        query: prompt
+      });
+      return response.data;
   },[]);
 
-    const inputSubmitHandler = useCallback((event: FormEvent<HTMLFormElement>) => {
+    const inputSubmitHandler = useCallback(async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const form = formRef.current ?? event.target as HTMLFormElement;
       const formValues = Object.fromEntries(new FormData(form));
       const prompt: string = formValues["prompt"] as string;
 
       if(prompt != ""){
-        addTextToHistory("user", prompt);
-        const response = queryPromptAPI("replace api end point here..."); // Temporary hardcoded response
-        addTextToHistory("bot", response);
+        addTextToHistory({boxOwner: "user", text: prompt});
+        const response_data = await queryPromptAPI(prompt);
+        console.log("Reponse from server:", response_data.relevant_links);
+        addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links});
       }
+
       form.reset();
     },[addTextToHistory, queryPromptAPI]);
 
