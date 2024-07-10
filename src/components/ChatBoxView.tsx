@@ -1,7 +1,5 @@
 import { TypeChatBox } from "./ChatContainerView";
 
-import parse from "react-html-parser";
-
 const ChatBoxView = ((content: TypeChatBox) => {
 
     const messageViewCSS: { user: string; bot: string; } = {
@@ -18,8 +16,6 @@ const ChatBoxView = ((content: TypeChatBox) => {
         "
     };
 
-    console.log(content)
-
     return (
         <div className={`
         m-1
@@ -35,7 +31,7 @@ const ChatBoxView = ((content: TypeChatBox) => {
             <ul className="w-full h-fit">
                 {content.links?.map((item, index) => {
                     return(
-                        <li className="
+                        <li key={index} className="
                             mx-0
                             my-1
                             p-2
@@ -43,7 +39,7 @@ const ChatBoxView = ((content: TypeChatBox) => {
                             bg-[#041e41]
                             text-white
                             underline
-                        "><a href={item}>[{index+1}] {item}</a></li>
+                        "><a href={item} target="_blank" rel="noopener noreferrer">[{index+1}] {item}</a></li>
                     );
                 })}
             </ul>

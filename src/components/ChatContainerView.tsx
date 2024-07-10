@@ -19,13 +19,20 @@ const ChatContainerView = () => {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [chatLogsState, setChatLogsState] = useState<TypeChatBox[]>([{
+  const botGreetingMessage = {
     boxOwner: "bot",
     text: "Hi, Before we get started, just know I’m a bot in training, and your questions help me learn! Short, clear phrases work best for me."
-  }]);
+  }
+
+  const [chatLogsState, setChatLogsState] = useState<TypeChatBox[]>([botGreetingMessage]);
+
+  const clearChatHandler: () => void = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setChatLogsState(_prevState => [botGreetingMessage]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
   const addTextToHistory = useCallback((content: TypeChatBox) => {
-    console.log("addTextToHistory:", content)
     setChatLogsState(prevState => [...prevState, content]);
   },[]);
 
@@ -45,7 +52,6 @@ const ChatContainerView = () => {
       if(prompt != ""){
         addTextToHistory({boxOwner: "user", text: prompt});
         const response_data = await queryPromptAPI(prompt);
-        console.log("Reponse from server:", response_data.relevant_links);
         addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links});
       }
 
@@ -64,7 +70,7 @@ const ChatContainerView = () => {
         justify-end
         items-center
         bg-white">
-          <ChatHeaderView/>
+          <ChatHeaderView clearChatHandler={clearChatHandler}/>
           <ChatView chatLogsState={chatLogsState}/>
           <form ref={formRef} onSubmit={(event) => {inputSubmitHandler(event)}} 
           className="w-[98%] 

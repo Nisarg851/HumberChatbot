@@ -1,6 +1,6 @@
 import MenuView from "./MenuView";
 
-const ChatHeaderView = () => {
+const ChatHeaderView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
     return (
         <div className="
         py-2
@@ -29,7 +29,7 @@ const ChatHeaderView = () => {
                 rounded-full"/>
             </div>
             <span className="font-serif font-bold">HAWK BOT</span>
-            <MenuView/>
+            <MenuView clearChatHandler={clearChatHandler}/>
         </div>
     );
 }
