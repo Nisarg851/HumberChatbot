@@ -81,12 +81,9 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
                                     <a href={link as string} target="_blank" rel="noopener noreferrer">{title}</a>
                                     </li>
                                 ))
-                                // quick_links.map((link, index) => (
-                                //     <li key={index} className="m-1 p-1 text-left">{link}</li>
-                                // ))
                             }
                             <button className="
-                            my-2
+                            my-4
                             p-1
                             w-[90%]
                             bg-white
@@ -96,7 +93,7 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
                             "><a href="mailto:enquiry@humber.ca">Enquiry@humber.ca</a></button>
 
                             <button className="
-                            my-2
+                            mb-5
                             p-1
                             w-[90%]
                             bg-white
