@@ -1,6 +1,6 @@
 import MenuView from "./MenuView";
 
-const ChatHeaderView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
+const ChatHeaderView: React.FC<{ clearChatHandler: () => void }> = ({clearChatHandler}) => {
     return (
         <div className="
         py-2

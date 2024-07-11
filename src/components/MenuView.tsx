@@ -4,7 +4,7 @@ import CrossIcon2 from "../assets/cross-icon-2.svg"
 
 const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
 
-    const quick_links: unknown = {
+    const quick_links: Record<string, string> = {
         "Home" : "https://www.humber.ca/",
         "Career and Advising" : "https://careers.humber.ca/",
         "Career Resources" : "https://careers.humber.ca/resources-career.php",
@@ -78,7 +78,7 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
                             {
                                 Object.entries(quick_links).map(([title, link]) => (
                                     <li key={title} className="m-1 p-1 text-left">
-                                    <a href={link} target="_blank" rel="noopener noreferrer">{title}</a>
+                                    <a href={link as string} target="_blank" rel="noopener noreferrer">{title}</a>
                                     </li>
                                 ))
                                 // quick_links.map((link, index) => (
