@@ -1,20 +1,24 @@
 import { TypeChatBox } from "./ChatContainerView";
 
+interface MessageViewCSS {
+    [key: string]: string
+}
+
 const ChatBoxView = ((content: TypeChatBox) => {
 
-    const messageViewCSS: { user: string; bot: string; } = {
-        user:"\
+    const messageViewCSS: MessageViewCSS = {
+        "user":"\
         self-end\
         bg-[#fec709]\
         text-black\
         ",
-        bot:"\
+        "bot":"\
         self-start\
         text-black\
         border-1\
         border-black\
         "
-    };
+    }
 
     return (
         <div className={`

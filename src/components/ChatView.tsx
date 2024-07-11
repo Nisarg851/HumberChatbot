@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import ChatBoxView from "./ChatBoxView";
-import RecomQueryContainer from "./RecomQueryContainer";
+import { TypeChatBox } from "./ChatContainerView";
 
-const ChatView = ({chatLogsState}) => {
+const ChatView: React.FC<{chatLogsState: TypeChatBox[]}> = ({chatLogsState}) => {
 
     const scroller = useRef<HTMLDivElement>(null);
 
