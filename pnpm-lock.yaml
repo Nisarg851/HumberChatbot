@@ -4,6 +4,9 @@ dependencies:
   '@nextui-org/input':
     specifier: ^2.2.2
     version: 2.2.2(@nextui-org/system@2.2.2)(@nextui-org/theme@2.2.6)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
+  '@nextui-org/skeleton':
+    specifier: ^2.0.29
+    version: 2.0.29(@nextui-org/system@2.2.2)(@nextui-org/theme@2.2.6)(react-dom@18.3.1)(react@18.3.1)
   '@nextui-org/system':
     specifier: ^2.2.2
     version: 2.2.2(@nextui-org/theme@2.2.6)(framer-motion@11.2.12)(react-dom@18.3.1)(react@18.3.1)
@@ -722,6 +725,22 @@ packages:
 
   /@nextui-org/shared-utils@2.0.5:
     resolution: {integrity: sha512-aFc/CUL8RVfBh0IotIpxkpKjyUPc/zJaMJd5pRCQA1kIpKLdSrlh3//MLYMaP/fo/NQtE3DPeXqfKhHRr1fkEw==}
+    dev: false
+
+  /@nextui-org/skeleton@2.0.29(@nextui-org/system@2.2.2)(@nextui-org/theme@2.2.6)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-s/oQdUc1Ao7XRmUP82V2/hI3B644ZQzIYuPIgp+A6DyDLfyRUx8PLWN/EhN5Ku2M/s6WYTkwulDrKeo4dlMsrw==}
+    peerDependencies:
+      '@nextui-org/system': '>=2.0.0'
+      '@nextui-org/theme': '>=2.1.0'
+      react: '>=18'
+      react-dom: '>=18'
+    dependencies:
+      '@nextui-org/react-utils': 2.0.14(react@18.3.1)
+      '@nextui-org/shared-utils': 2.0.5
+      '@nextui-org/system': 2.2.2(@nextui-org/theme@2.2.6)(framer-motion@11.2.12)(react-dom@18.3.1)(react@18.3.1)
+      '@nextui-org/theme': 2.2.6(tailwindcss@3.4.4)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /@nextui-org/system-rsc@2.1.2(@nextui-org/theme@2.2.6)(react@18.3.1):

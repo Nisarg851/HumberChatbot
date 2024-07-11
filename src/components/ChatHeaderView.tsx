@@ -11,6 +11,8 @@ const ChatHeaderView: React.FC<{ clearChatHandler: () => void }> = ({clearChatHa
         flex
         justify-start
         items-center
+        shadow-sm
+        shadow-black
         ">
             <div className="relative">
                 <div className="

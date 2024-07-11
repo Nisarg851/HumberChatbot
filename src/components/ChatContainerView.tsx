@@ -10,7 +10,7 @@ import axios from "axios";
 const BASE_URL: string = "https://humberchatbotbackend.onrender.com"
 
 export interface TypeChatBox {
-  boxOwner: string;
+  boxOwner: string | null;
   text: string;
   links?: Array<string>;
 }
@@ -32,9 +32,18 @@ const ChatContainerView = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
-  const addTextToHistory = useCallback((content: TypeChatBox) => {
-    setChatLogsState(prevState => [...prevState, content]);
-  },[]);
+  const addTextToHistory = useCallback((content: TypeChatBox, position: number) => {
+    if(position >= chatLogsState.length){
+      setChatLogsState(prevState => [...prevState, content]);
+      return;
+    }
+    setChatLogsState(prevState => {
+      const tempState: TypeChatBox[] = [...prevState];
+      tempState[tempState.length-1] = content;
+      return tempState;
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[chatLogsState]);
 
   const queryPromptAPI = useCallback(async (prompt: string)=>{
       const response = await axios.post(`${BASE_URL}/get-query-result`,{
@@ -50,13 +59,13 @@ const ChatContainerView = () => {
       const prompt: string = formValues["prompt"] as string;
 
       if(prompt != ""){
-        addTextToHistory({boxOwner: "user", text: prompt});
+        addTextToHistory({boxOwner: "user", text: prompt}, chatLogsState.length);
+        form.reset();
+        addTextToHistory({boxOwner: null, text: ""}, chatLogsState.length);
         const response_data = await queryPromptAPI(prompt);
-        addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links});
+        addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links}, chatLogsState.length-1);
       }
-
-      form.reset();
-    },[addTextToHistory, queryPromptAPI]);
+    },[addTextToHistory, chatLogsState.length, queryPromptAPI]);
 
     return (
         <div className="
