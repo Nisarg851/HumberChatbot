@@ -7,7 +7,7 @@ import ChatView from "./ChatView";
 import axios from "axios";
 
 
-const BASE_URL: string = "http://localhost:5000"
+const BASE_URL: string = "https://humberchatbotbackend.onrender.com"
 
 export interface TypeChatBox {
   boxOwner: string;
