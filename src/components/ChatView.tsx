@@ -35,7 +35,7 @@ const ChatView: React.FC<{chatLogsState: TypeChatBox[]}> = ({chatLogsState}) => 
                 <RecomQueryContainer/>
             </div> */}
             {
-                chatLogsState.reverse().map((chatBox, index) => {
+                chatLogsState.map((chatBox, index) => {
                     return <ChatBoxView 
                     key={index}
                     boxOwner={chatBox["boxOwner"]}
