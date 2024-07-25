@@ -8,7 +8,6 @@ import axios from "axios";
 
 
 const BASE_URL: string = "https://humberchatbotbackend.onrender.com"
-// const BASE_URL: string = "http://127.0.0.1:8000"
 
 export interface TypeChatBox {
   boxOwner: string;
@@ -22,7 +21,7 @@ const ChatContainerView = () => {
 
   const botGreetingMessage = {
     boxOwner: "bot",
-    text: "Hi, Before we get started, just know I’m a bot in training, and your questions help me learn! Short, clear phrases work best for me."
+    text: "Before we get started, just know I’m new to this job. Short, clear phrases work best for me! If you encounter any issues or need more help, refer to the Enquire section in the menu for assistance."
   }
 
   const [chatLogsState, setChatLogsState] = useState<TypeChatBox[]>([botGreetingMessage]);
@@ -53,6 +52,12 @@ const ChatContainerView = () => {
       return response.data;
   },[]);
 
+  const promptRequestHandler = useCallback(async (prompt: string) => {
+    addTextToHistory({boxOwner: "bot", text: ""}, chatLogsState.length);
+    const response_data = await queryPromptAPI(prompt);
+    addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links}, chatLogsState.length-1);
+  }, [addTextToHistory, chatLogsState.length, queryPromptAPI]);
+
     const inputSubmitHandler = useCallback(async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const form = formRef.current ?? event.target as HTMLFormElement;
@@ -62,11 +67,9 @@ const ChatContainerView = () => {
       if(prompt != ""){
         addTextToHistory({boxOwner: "user", text: prompt}, chatLogsState.length);
         form.reset();
-        addTextToHistory({boxOwner: "bot", text: ""}, chatLogsState.length);
-        const response_data = await queryPromptAPI(prompt);
-        addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links}, chatLogsState.length-1);
+        await promptRequestHandler(prompt);
       }
-    },[addTextToHistory, chatLogsState.length, queryPromptAPI]);
+    },[addTextToHistory, chatLogsState.length, promptRequestHandler]);
 
     return (
         <div className="
@@ -80,8 +83,12 @@ const ChatContainerView = () => {
         justify-end
         items-center
         bg-white">
-          <ChatHeaderView clearChatHandler={clearChatHandler}/>
-          <ChatView chatLogsState={chatLogsState}/>
+          <ChatHeaderView clearChatHandler={clearChatHandler} chatLogsLengthState={chatLogsState.length}/>
+          <ChatView 
+            addTextToHistory={addTextToHistory} 
+            promptRequestHandler={promptRequestHandler} 
+            chatLogsState={chatLogsState}/>
+
           <form ref={formRef} onSubmit={(event) => {inputSubmitHandler(event)}} 
           className="w-[98%] 
           h-fit 

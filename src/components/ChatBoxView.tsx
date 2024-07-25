@@ -2,7 +2,7 @@
 import { TypeChatBox } from "./ChatContainerView";
 import { mirage } from "ldrs";
 import { Button } from "@nextui-org/button";
-// import TypeWriter from "./TypeWriter";
+import TypeWriter from "./TypeWriter";
 import { useCallback, useState } from "react";
 import LinkIcon from "../assets/link-icon.svg";
 import CopyIcon from "../assets/copy-icon.svg";
@@ -25,9 +25,10 @@ const ChatBoxView = ((content: TypeChatBox) => {
     mirage.register();
     
     const contentLinksLength = content.links?.length ?? 0;
-    const offset = 2;
+    const offset = 5;
     const totalLinkPages = Math.ceil(contentLinksLength/offset);
     const [linksPage, setLinksPage] = useState<number>(1);
+    const [typerwriterMounted, setTypeWriterMounted] = useState<boolean>(false);
 
     const messageViewCSS: MessageViewCSS = {
         "user":"\
@@ -71,8 +72,10 @@ const ChatBoxView = ((content: TypeChatBox) => {
                                 color="#041e41"></l-mirage>
                         </div>)
                     : (<div>
-                                <div>{content.text}</div>
-                                <ul className="w-full h-fit">
+                                <div>
+                                    <TypeWriter content={content.text} speed={10} setTypeWriterMounted={setTypeWriterMounted}/>
+                                </div>
+                                <ul className={`${typerwriterMounted ? "block" : "hidden"} w-full h-fit overflow-hidden`}>
                                     {content.links?.slice((linksPage-1)*offset, (linksPage-1)*offset+offset).map((item, index) => {
                                         const newLinkIndex = ((linksPage-1)*offset)+index;
                                         return(
@@ -85,6 +88,7 @@ const ChatBoxView = ((content: TypeChatBox) => {
                                                 text-white
                                                 underline
                                                 truncate
+                                                animate-slide-in-from-left
                                             ">
                                             <img src={CopyIcon} alt="(link)" 
                                                 onClick={() => {copyHandler(item);}}
@@ -99,40 +103,57 @@ const ChatBoxView = ((content: TypeChatBox) => {
                                     })}
                                 </ul>
                                 {
-                                    totalLinkPages!=0 
-                                    ? <div className={`
-                                        mt-5
-                                        flex
-                                        justify-between
-                                        items-center
-                                        `}>
-                                            <Button color="primary" 
-                                                variant="bordered" 
-                                                className={`${linksPage==1 ? "invisible" : "inline"}`} 
-                                                onClick={()=>movePageHandler("prev")}>
-                                                Page {linksPage - 1}
-                                            </Button>
-
-                                            <div className="flex">
-                                            {Array.from({ length: totalLinkPages}).map((_, index) => {
-                                                    return (<div 
-                                                        key={index}
-                                                        className={`
-                                                        mx-1
-                                                        size-1.5
-                                                        border-1
-                                                        ${linksPage-1 == index ? "bg-[#041e41]" : "bg-slate-400"}
-                                                        rounded-full`}></div>);
-                                                })}
+                                    totalLinkPages>1 && typerwriterMounted
+                                    ? (
+                                    <div>
+                                        <div className={`
+                                            mt-5
+                                            flex
+                                            justify-between
+                                            items-center
+                                            `}>
+                                                <Button color="primary"
+                                                    variant="bordered"
+                                                    className={`${linksPage==1 ? "invisible" : "inline"}`}
+                                                    onClick={()=>movePageHandler("prev")}>
+                                                    Page {linksPage - 1}
+                                                </Button>
+                                                <div className="flex">
+                                                {Array.from({ length: totalLinkPages}).map((_, index) => {
+                                                        return (<div
+                                                            key={index}
+                                                            className={`
+                                                            mx-1
+                                                            size-1.5
+                                                            border-1
+                                                            ${linksPage-1 == index ? "bg-[#041e41]" : "bg-slate-400"}
+                                                            rounded-full`}></div>);
+                                                    })}
+                                                </div>
+                                                <Button color="primary"
+                                                variant="bordered"
+                                                className={`${linksPage==totalLinkPages ? "invisible" : "inline"}`}
+                                                onClick={()=>movePageHandler("next")}>
+                                                    Page {linksPage + 1}
+                                                </Button>
                                             </div>
-
-                                            <Button color="primary" 
-                                            variant="bordered"  
-                                            className={`${linksPage==totalLinkPages ? "invisible" : "inline"}`}
-                                            onClick={()=>movePageHandler("next")}>
-                                                Page {linksPage + 1}
-                                            </Button>
-                                        </div>
+                                            <p className="mt-4">
+                                                If you still need further information make sure to check out the FAQs  
+                                                &nbsp;
+                                                <a href="https://careers.humber.ca/questions-answers.php" className="text-blue-800 underline">
+                                                    Humber: Defining Polytechnic Education | Humber College Institute of Technology & Advanced Learning - Toronto, Ontario, Canada
+                                                </a> 
+                                                &nbsp;
+                                                or contact our Front Desk at
+                                                &nbsp;
+                                                <a href="mailto:careers@humber.ca" 
+                                                className="text-blue-800 underline">careers@humber.ca</a> 
+                                                &nbsp;
+                                                or 416-675-6622 ext.5030
+                                            </p>
+                                    </div>
+                                            
+                                    )
                                     :   <></>
                                 }
                         </div>

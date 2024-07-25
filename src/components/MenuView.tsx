@@ -5,11 +5,11 @@ import CrossIcon2 from "../assets/cross-icon-2.svg"
 const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
 
     const quick_links: Record<string, string> = {
-        "Home" : "https://www.humber.ca/",
         "Career and Advising" : "https://careers.humber.ca/",
         "Career Resources" : "https://careers.humber.ca/resources-career.php",
         "CareerConnect" : "https://careers.humber.ca/employer-careerconnect.php",
-        "Contact Advisor" : "https://careers.humber.ca/advisor-team.php"
+        "Contact an Advisor" : "https://careers.humber.ca/advisor-team.php",
+        "Devant": "http://humber.devant.ca"
     }
 
     const [menuToggle, setMenuToggle] = useState(false);
@@ -33,6 +33,7 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
             items-end
             w-fit
             h-fit
+            overflow-hidden
             ">
                 <img src={menuToggle ? CrossIcon2 : MenuIcon}
                 className={`
@@ -45,16 +46,16 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
                 `}
                 onClick={() => {setMenuToggle(prevState => (!prevState))}}
                 alt="send"></img>
-                {
-                    menuToggle 
-                    ?  (<ul className="
+                <ul className={`
+                        ${menuToggle ? "block" : "hidden"}
+                        animate-pop-in
                         w-[80vw]
                         lg:w-[20vw]
                         bg-[#041e41]
                         rounded-xl
                         border-b-2
                         border-white
-                        ">
+                        `}>
                             <li key="Quick Links" className={`m-1 
                             p-1 
                             flex 
@@ -91,7 +92,7 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
                             text-[#041e41]
                             font-bold
                             rounded-md
-                            "><a href="mailto:enquiry@humber.ca">Enquiry@humber.ca</a></button>
+                            "><a href="mailto:enquiry@humber.ca">Need Help?</a></button>
 
                             <button className="
                             mb-5
@@ -108,9 +109,7 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
                             }}
                             >Clear Chat</button>
 
-                        </ul>)
-                    :   <></>
-                }
+                        </ul>
             </div>
         </div>
     );
