@@ -8,9 +8,10 @@ import axios from "axios";
 
 
 const BASE_URL: string = "https://humberchatbotbackend.onrender.com"
+// const BASE_URL: string = "http://127.0.0.1:8000"
 
 export interface TypeChatBox {
-  boxOwner: string | null;
+  boxOwner: string;
   text: string;
   links?: Array<string>;
 }
@@ -61,7 +62,7 @@ const ChatContainerView = () => {
       if(prompt != ""){
         addTextToHistory({boxOwner: "user", text: prompt}, chatLogsState.length);
         form.reset();
-        addTextToHistory({boxOwner: null, text: ""}, chatLogsState.length);
+        addTextToHistory({boxOwner: "bot", text: ""}, chatLogsState.length);
         const response_data = await queryPromptAPI(prompt);
         addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links}, chatLogsState.length-1);
       }
