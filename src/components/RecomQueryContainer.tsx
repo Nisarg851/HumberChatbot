@@ -26,7 +26,8 @@ const RecomQueryContainer: React.FC<{
         border-1 
         border-slate-400
         rounded-xl
-        shrink-0"
+        shrink-0
+        bg-white"
         onClick={onClickHandler}
         >
             <p ref={queryRef} className="p-2 font-serif text-black text-left italic">{query}</p>

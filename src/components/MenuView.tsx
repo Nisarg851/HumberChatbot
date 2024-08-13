@@ -92,7 +92,7 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
                             text-[#041e41]
                             font-bold
                             rounded-md
-                            "><a href="mailto:enquiry@humber.ca">Need Help?</a></button>
+                            "><a href="mailto:careers@humber.ca">Need Help?</a></button>
 
                             <button className="
                             mb-5

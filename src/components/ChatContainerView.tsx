@@ -21,8 +21,15 @@ const ChatContainerView = () => {
 
   const botGreetingMessage = {
     boxOwner: "bot",
-    text: "Before we get started, just know I’m new to this job. Short, clear phrases work best for me! If you encounter any issues or need more help, refer to the Enquire section in the menu for assistance."
+    text: "Before we get started, please provide short and clear phrases as they work best for me! If you encounter any issues or need more help, checkout Menu"
   }
+
+  const [userRole, setUserRole] = useState("student");
+
+  // handler for passing to child nodes
+  const modifyUserRole: (newRole: string) => void = useCallback((newRole: string) => {
+    setUserRole(newRole);
+  }, [setUserRole]);
 
   const [chatLogsState, setChatLogsState] = useState<TypeChatBox[]>([botGreetingMessage]);
 
@@ -47,10 +54,11 @@ const ChatContainerView = () => {
 
   const queryPromptAPI = useCallback(async (prompt: string)=>{
       const response = await axios.post(`${BASE_URL}/get-query-result`,{
+        user_role: userRole,
         query: prompt
       });
       return response.data;
-  },[]);
+  },[userRole]);
 
   const promptRequestHandler = useCallback(async (prompt: string) => {
     addTextToHistory({boxOwner: "bot", text: ""}, chatLogsState.length);
@@ -85,6 +93,7 @@ const ChatContainerView = () => {
         bg-white">
           <ChatHeaderView clearChatHandler={clearChatHandler} chatLogsLengthState={chatLogsState.length}/>
           <ChatView 
+            modifyUserRole={modifyUserRole}
             addTextToHistory={addTextToHistory} 
             promptRequestHandler={promptRequestHandler} 
             chatLogsState={chatLogsState}/>
