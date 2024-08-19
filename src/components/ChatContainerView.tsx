@@ -21,8 +21,15 @@ const ChatContainerView = () => {
 
   const botGreetingMessage = {
     boxOwner: "bot",
-    text: "Hi, Before we get started, just know I’m a bot in training, and your questions help me learn! Short, clear phrases work best for me."
+    text: "Before we get started, please provide short and clear phrases as they work best for me! If you encounter any issues or need more help, checkout Menu"
   }
+
+  const [userRole, setUserRole] = useState("student");
+
+  // handler for passing to child nodes
+  const modifyUserRole: (newRole: string) => void = useCallback((newRole: string) => {
+    setUserRole(newRole);
+  }, [setUserRole]);
 
   const [chatLogsState, setChatLogsState] = useState<TypeChatBox[]>([botGreetingMessage]);
 
@@ -32,16 +39,32 @@ const ChatContainerView = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
-  const addTextToHistory = useCallback((content: TypeChatBox) => {
-    setChatLogsState(prevState => [...prevState, content]);
-  },[]);
+  const addTextToHistory = useCallback((content: TypeChatBox, position: number) => {
+    if(position >= chatLogsState.length){
+      setChatLogsState(prevState => [...prevState, content]);
+      return;
+    }
+    setChatLogsState(prevState => {
+      const tempState: TypeChatBox[] = [...prevState];
+      tempState[tempState.length-1] = content;
+      return tempState;
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[chatLogsState]);
 
   const queryPromptAPI = useCallback(async (prompt: string)=>{
       const response = await axios.post(`${BASE_URL}/get-query-result`,{
+        user_role: userRole,
         query: prompt
       });
       return response.data;
-  },[]);
+  },[userRole]);
+
+  const promptRequestHandler = useCallback(async (prompt: string) => {
+    addTextToHistory({boxOwner: "bot", text: ""}, chatLogsState.length);
+    const response_data = await queryPromptAPI(prompt);
+    addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links}, chatLogsState.length-1);
+  }, [addTextToHistory, chatLogsState.length, queryPromptAPI]);
 
     const inputSubmitHandler = useCallback(async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -50,13 +73,11 @@ const ChatContainerView = () => {
       const prompt: string = formValues["prompt"] as string;
 
       if(prompt != ""){
-        addTextToHistory({boxOwner: "user", text: prompt});
-        const response_data = await queryPromptAPI(prompt);
-        addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links});
+        addTextToHistory({boxOwner: "user", text: prompt}, chatLogsState.length);
+        form.reset();
+        await promptRequestHandler(prompt);
       }
-
-      form.reset();
-    },[addTextToHistory, queryPromptAPI]);
+    },[addTextToHistory, chatLogsState.length, promptRequestHandler]);
 
     return (
         <div className="
@@ -70,8 +91,13 @@ const ChatContainerView = () => {
         justify-end
         items-center
         bg-white">
-          <ChatHeaderView clearChatHandler={clearChatHandler}/>
-          <ChatView chatLogsState={chatLogsState}/>
+          <ChatHeaderView clearChatHandler={clearChatHandler} chatLogsLengthState={chatLogsState.length}/>
+          <ChatView 
+            modifyUserRole={modifyUserRole}
+            addTextToHistory={addTextToHistory} 
+            promptRequestHandler={promptRequestHandler} 
+            chatLogsState={chatLogsState}/>
+
           <form ref={formRef} onSubmit={(event) => {inputSubmitHandler(event)}} 
           className="w-[98%] 
           h-fit 
