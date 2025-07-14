@@ -5,6 +5,7 @@ import { TypeChatBox } from "./ChatContainerView";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { Button } from "@nextui-org/button";
 import DropDownArrow from "../assets/drop-down-arrow.svg";
+import HawkGreetingVideo from "/hawk_waving.mp4";
 
 const ChatView: React.FC<{
     modifyUserRole: (newRole: string) => void,
@@ -46,6 +47,7 @@ const ChatView: React.FC<{
         flex-col
         justify-start
         w-full
+        md:w-[60%]
         h-full
         overflow-scroll
         no-scrollbar">
@@ -58,8 +60,9 @@ const ChatView: React.FC<{
                 flex
                 flex-col
                 items-center`}>
-                <img src="https://widget-assets.geckochat.io/5dcf2cdafbfce81a9fd8f1db006787f3.png"
-                className="w-[25%] rounded-full border-1 border-slate-400"/>
+                    <video src={HawkGreetingVideo} autoPlay muted className="w-[20%] rounded-full shadow-md" />
+                {/* <img src="https://widget-assets.geckochat.io/5dcf2cdafbfce81a9fd8f1db006787f3.png"
+                className="w-[25%] rounded-full border-1 border-slate-400"/> */}
                 <p className="mx-2 text-black">
                     <i className="text-lg font-bold"> Hello! I'm Hawk bot </i><br/>
                     <i className="text-lg font-medium"> 
@@ -77,7 +80,7 @@ const ChatView: React.FC<{
                     variant="light" 
                     className="capitalize border-1 border-[#041e41]">
                         <i className="flex font-bold">
-                            Role: {selectedValue}
+                            Resources for {selectedValue}
                             <img src={DropDownArrow} alt="dropdown" />
                         </i>
                     </Button>
@@ -91,9 +94,9 @@ const ChatView: React.FC<{
                     onSelectionChange={setSelectedKeys}
                     className="text-black"
                 >
-                    <DropdownItem key="student">Student</DropdownItem>
-                    <DropdownItem key="faculty">Staff/Faculty</DropdownItem>    
-                    <DropdownItem key="employer">Employer</DropdownItem>
+                    <DropdownItem key="students">Students</DropdownItem>
+                    <DropdownItem key="facultys">Staff/Faculty</DropdownItem>    
+                    <DropdownItem key="employers">Employers</DropdownItem>
                 </DropdownMenu>
                 </Dropdown>
             </div>

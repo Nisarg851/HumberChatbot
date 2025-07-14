@@ -1,13 +1,13 @@
 import { useState, useCallback, FormEvent, useRef } from "react";
-import { Input } from "@nextui-org/input"
+import { Textarea } from "@nextui-org/input"
 import SendIcon from "../assets/send-icon.svg"
-import CrossIcon from "../assets/cross-icon.svg"
+// import CrossIcon from "../assets/cross-icon.svg"
 import ChatHeaderView from "./ChatHeaderView";
 import ChatView from "./ChatView";
 import axios from "axios";
 
 
-const BASE_URL: string = "https://humberchatbotbackend.onrender.com"
+const BASE_URL: string = "http://127.0.0.1:8000"
 
 export interface TypeChatBox {
   boxOwner: string;
@@ -81,11 +81,8 @@ const ChatContainerView = () => {
 
     return (
         <div className="
-        pt-1
         pb-10
         w-screen
-        lg:w-[50%] 
-        h-[100%] 
         flex 
         flex-col
         justify-end
@@ -99,51 +96,37 @@ const ChatContainerView = () => {
             chatLogsState={chatLogsState}/>
 
           <form ref={formRef} onSubmit={(event) => {inputSubmitHandler(event)}} 
-          className="w-[98%] 
+          className="
+          w-full
+          md:w-[60%] 
           h-fit 
           flex 
           justify-center 
-          items-center 
-          border-2 
-          border-slate-300 
-          rounded-full">
-            <Input
+          items-start
+          border-2
+          border-slate-200 
+          rounded-xl">
+            <Textarea
               isClearable
-              radius="lg"
               name="prompt"
+              className="w-full text-black"
               classNames={{
-                label: "text-black/50 dark:text-white/90",
-                input: [
-                  "h-[8vh]",
-                  "text-lg",
-                  "text-black/90 dark:text-white/90",
-                  "placeholder:text-[1.2rem] \
-                  placeholder:text-default-700/80 \
-                  dark:placeholder:text-white/60",
-                ],
-                inputWrapper: [
-                  "!cursor-text",
-                  "rounded-full",
-                  "overflow-hidden",
-                  "bg-white"
-                ],
+                inputWrapper: "border-none shadow-none", 
+                input: "focus:outline-none focus:ring-0 focus:border-transparent",
               }}
-              endContent={<img src={CrossIcon}     
-              className="
-              m-0
-              p-2
-              w-[45px]
-              bg-[#ffffff00]
-              " 
-              alt="send"></img>}
+              defaultValue=""
               placeholder="Ask Hawk..."
+              variant="bordered"
+              onKeyDown={(event)=>{ if(event.key === 'Enter' && !event.shiftKey){event.preventDefault(); inputSubmitHandler(event);}}}
+              // eslint-disable-next-line no-console
+              onClear={() => console.log("textarea cleared")}
             />
             <button 
               type="submit"
               className="
                   m-0
                   p-2
-                  w-[45px]
+                  w-12
                   bg-[#ffffff00]">
               <img src={SendIcon} alt="send"></img>
             </button>

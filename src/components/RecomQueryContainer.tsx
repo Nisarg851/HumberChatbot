@@ -19,15 +19,17 @@ const RecomQueryContainer: React.FC<{
 
     return (
         <div className="
-        mx-2
-        w-[50%]
-        xl:w-[23%]
-        h-full
-        border-1 
-        border-slate-400
-        rounded-xl
-        shrink-0
-        bg-white"
+            w-[20%]
+            h-[20vh]
+            border-slate-200
+            bg-white
+            rounded-lg
+            truncate
+            shadow-md
+            hover:shadow-lg
+            hover:border-1
+            text-wrap
+            animate-slide-in-from-left"
         onClick={onClickHandler}
         >
             <p ref={queryRef} className="p-2 font-serif text-black text-left italic">{query}</p>

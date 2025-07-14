@@ -16,6 +16,7 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
 
     return (
         <div className={`
+        md:mr-[10%]
         absolute
         z-10
         top-2
@@ -24,7 +25,7 @@ const MenuView = ({clearChatHandler}: { clearChatHandler: () => void }) => {
         h-fit
         border-2
         border-white 
-        ${menuToggle ? "rounded-xl" : "rounded-full"}
+        ${menuToggle ? "rounded-xl" : "border-none"}
         `}>
             <div className="
             flex

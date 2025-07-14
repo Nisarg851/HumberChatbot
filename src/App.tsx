@@ -11,8 +11,7 @@ function App() {
       h-screen 
       flex 
       justify-center 
-      align-center
-      bg-black'>
+      align-center'>
         <ChatContainerView/>
       </div>
   );

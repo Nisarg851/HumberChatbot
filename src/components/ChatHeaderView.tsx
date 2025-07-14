@@ -17,7 +17,7 @@ const ChatHeaderView: React.FC<{ clearChatHandler: () => void, chatLogsLengthSta
         shadow-sm
         shadow-black
         ">
-            <div className="relative">
+            <div className="relative md:ml-[10%]">
                 <div className="
                 absolute 
                 bottom-0
