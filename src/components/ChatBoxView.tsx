@@ -4,28 +4,36 @@ import { mirage } from "ldrs";
 import { Button } from "@nextui-org/button";
 import TypeWriter from "./TypeWriter";
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
 import HawkTypingVideo from "/hawk_typing.mp4";
 import UserProfile from "../assets/user-icon.svg";
+import axios from "axios";
 
 interface MAP {
   [key: string]: {title: string, description: string};
 }
 
+// interface ResourceModel{
+//     title: string,
+//     url: string,
+//     summary: string,
+//     tags: string[]
+// }
+
 const LinkPageView = ({item, metaDataList, setMetaDataList}: {item: string, metaDataList: MAP, setMetaDataList: React.Dispatch<React.SetStateAction<MAP>>}) => {
-    // const [pageMetaData, setPageMetaData] = useState<{title: string, description: string}|null>(null);
+    const [pageMetaData, setPageMetaData] = useState<{title: string, description: string}|null>(null);
     const [loaded, setLoaded] = useState<boolean>(false);
 
     useEffect(()=>{
         const fetchURLMetaData = async (pageUrl: string) => {
             if(metaDataList[item]!=undefined){
+                setPageMetaData(metaDataList[item]);
                 setLoaded(true);
                 return;
             }
-            const res = await axios.post(`http://localhost:8000/metadata`,{
+            const res = await axios.post(`https://humberchatbotbackend.onrender.com/metadata`,{
                 url: pageUrl
             });
-            // setPageMetaData(res.data);
+            setPageMetaData(res.data);
             setMetaDataList(prevData => {
                 const newData = {...prevData};
                 newData[item] = res.data;
@@ -53,16 +61,16 @@ const LinkPageView = ({item, metaDataList, setMetaDataList}: {item: string, meta
                         bg-white
                         rounded-lg
                         truncate
-                        text-slate-500
                         shadow-md
-                        hover:shadow-lg
+                        text-slate-600
+                        hover:shadow-xl
                         hover:border-1
                         animate-slide-in-from-left">
                             <a href={item} target="_blank" className="w-full h-full flex flex-col justify-between">
                                 <div className="text-wrap">
-                                    <h1 className="text-md font-bold text-[#041e41]">{metaDataList[item].title}</h1>
-                                    <h2 className="text-sm">{item}</h2>
-                                    <p className="my-4 text-sm overflow-hidden line-clamp-3 text-wrap text-justify">{metaDataList[item].description}</p>
+                                    <h1 className="text-md font-bold text-[#041e41]">{pageMetaData!.title}</h1>
+                                    <h2 className="text-sm text-blue-400">{item}</h2>
+                                    <p className="my-4 text-sm overflow-hidden line-clamp-3 text-wrap text-start">{pageMetaData!.description}</p>
                                 </div>
                                 <span className="w-fit text-sm hover:font-bold hover:underline hover:mr-2">Visit Page →</span>
                             </a>
@@ -105,7 +113,8 @@ const ChatBoxView = ((content: TypeChatBox) => {
                 ${content.boxOwner=="user" ? "self-end text-end md:w-fit bg-[#fec709]" : "self-start"}`
                 }>
                 {content.text == ""
-                    ? (<div className="m-2 p-3">
+                    ? (<div className="flex justify-start items-center m-2 p-3">
+                            <video src={HawkTypingVideo} autoPlay muted loop className="hidden md:block w-12 h-12 rounded-full shadow-md" />
                             <l-mirage
                                 size="60"
                                 speed="2.5" 
@@ -113,7 +122,7 @@ const ChatBoxView = ((content: TypeChatBox) => {
                         </div>)
                     : (<div className={`flex ${content.boxOwner=="user" && "flex-row-reverse"}`}>
                         {content.boxOwner=="bot"
-                            ? <video src={HawkTypingVideo} autoPlay muted className="w-12 h-12 rounded-full shadow-md" />
+                            ? <video src={HawkTypingVideo} autoPlay muted className="hidden md:block w-12 h-12 rounded-full shadow-md" />
                             : <img src={UserProfile} className="p-1 w-8 h-8 rounded-full bg-white shadow-md"/>
                         }
                         <div>
@@ -124,7 +133,7 @@ const ChatBoxView = ((content: TypeChatBox) => {
                                             : <p className="whitespace-pre-wrap">{content.text}</p>
                                         }
                                     </div>
-                                    <ul className={`${(typerwriterMounted && content.boxOwner!="user") ? "block" : "hidden"} p-2 grid grid-cols-2 gap-4 w-full h-fit overflow-hidden`}>
+                                    <ul className={`${(typerwriterMounted && content.boxOwner!="user") ? "block" : "hidden"} md:p-2 grid md:grid-cols-2 gap-4 w-full h-fit overflow-hidden`}>
                                         {content.links?.slice((linksPage-1)*offset, (linksPage-1)*offset+offset).map((item, index) => {
                                             const newLinkIndex = ((linksPage-1)*offset)+index;
                                             return(

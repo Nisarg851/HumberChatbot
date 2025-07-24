@@ -7,7 +7,7 @@ import ChatView from "./ChatView";
 import axios from "axios";
 
 
-const BASE_URL: string = "http://127.0.0.1:8000"
+const BASE_URL: string = "https://humberchatbotbackend.onrender.com"
 
 export interface TypeChatBox {
   boxOwner: string;
@@ -21,7 +21,7 @@ const ChatContainerView = () => {
 
   const botGreetingMessage = {
     boxOwner: "bot",
-    text: "Before we get started, please provide short and clear phrases as they work best for me! If you encounter any issues or need more help, checkout Menu"
+    text: "Hi there!, I'm Hawk. I'll assist you navigating Humber's career resources. Before we get started, please provide short and clear phrases as they work best for me! If you encounter any issues or need more help, checkout Menu"
   }
 
   const [userRole, setUserRole] = useState("student");
@@ -53,11 +53,26 @@ const ChatContainerView = () => {
   },[chatLogsState]);
 
   const queryPromptAPI = useCallback(async (prompt: string)=>{
-      const response = await axios.post(`${BASE_URL}/get-query-result`,{
+    try {
+    const response = await axios.post(`${BASE_URL}/get-query-result`,{
         user_role: userRole,
-        query: prompt
-      });
-      return response.data;
+        query: prompt,
+      },{ timeout: 60000 }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+      return {
+        "answer": "😔Request timed out. Please try again.",
+        "resources": []
+      }
+    } else {
+      return {
+        "answer": "❗An error occurred while fetching the response. Please try again",
+        "resources": []
+      }
+    }
+  }
   },[userRole]);
 
   const promptRequestHandler = useCallback(async (prompt: string) => {
@@ -66,7 +81,7 @@ const ChatContainerView = () => {
     addTextToHistory({boxOwner: "bot", text: response_data.response_message, links: response_data.relevant_links}, chatLogsState.length-1);
   }, [addTextToHistory, chatLogsState.length, queryPromptAPI]);
 
-    const inputSubmitHandler = useCallback(async (event: FormEvent<HTMLFormElement>) => {
+    const inputSubmitHandler = useCallback(async (event: (FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLInputElement>)) => {
       event.preventDefault();
       const form = formRef.current ?? event.target as HTMLFormElement;
       const formValues = Object.fromEntries(new FormData(form));

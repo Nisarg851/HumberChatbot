@@ -33,3 +33,23 @@ body{
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+.markdown > * {
+    all: revert;
+}
+
+.markdown blockquote {
+    margin: 0px;
+    padding-left: 8px;
+    border-left: 4px solid ;
+}
+
+.markdown blockquote * {
+    display: block;
+}
+
+.markdown blockquote ul li::before {
+    content: "•";
+    display: inline-block;
+    width: 1em;
+  }

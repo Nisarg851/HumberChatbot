@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import CustomMarkdown from "./CustomMarkdown";
 
 const TypeWriter = ({ content = "", speed = 10, setTypeWriterMounted }: {content: string, speed: number, setTypeWriterMounted: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const [text, setText] = useState<string>("");
@@ -15,7 +16,7 @@ const TypeWriter = ({ content = "", speed = 10, setTypeWriterMounted }: {content
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[index]);
     
-    return <p className="whitespace-pre-wrap">{text}</p>;
+    return <div className="whitespace-pre-wrap"><CustomMarkdown className="">{text}</CustomMarkdown></div>;
 };
 
 export default TypeWriter;

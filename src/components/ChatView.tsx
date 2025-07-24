@@ -91,7 +91,7 @@ const ChatView: React.FC<{
                     disallowEmptySelection
                     selectionMode="single"
                     selectedKeys={selectedKeys}
-                    onSelectionChange={setSelectedKeys}
+                    onSelectionChange={(keys)=>{setSelectedKeys(new Set(keys.anchorKey))}}
                     className="text-black"
                 >
                     <DropdownItem key="students">Students</DropdownItem>
