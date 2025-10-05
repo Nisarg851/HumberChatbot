@@ -44,11 +44,13 @@ const ChatContainerView = () => {
       setChatLogsState(prevState => [...prevState, content]);
       return;
     }
+    
     setChatLogsState(prevState => {
       const tempState: TypeChatBox[] = [...prevState];
       tempState[tempState.length-1] = content;
       return tempState;
     });
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[chatLogsState]);
 
@@ -57,18 +59,17 @@ const ChatContainerView = () => {
     const response = await axios.post(`${BASE_URL}/get-query-result`,{
         user_role: userRole,
         query: prompt,
-      },{ timeout: 60000 }
-    );
+      });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
       return {
         "answer": "😔Request timed out. Please try again.",
         "resources": []
-      }
+      } 
     } else {
       return {
-        "answer": "❗An error occurred while fetching the response. Please try again",
+        "answer": "😣❗An error occurred while fetching the response. Please try again",
         "resources": []
       }
     }

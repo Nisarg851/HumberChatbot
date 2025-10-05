@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import HawkTypingVideo from "/hawk_typing.mp4";
 import UserProfile from "../assets/user-icon.svg";
 import axios from "axios";
+import { span } from "framer-motion/client";
 
 interface MAP {
   [key: string]: {title: string, description: string};
@@ -114,17 +115,13 @@ const ChatBoxView = ((content: TypeChatBox) => {
                 }>
                 {content.text == ""
                     ? (<div className="flex justify-start items-center m-2 p-3">
-                            <video src={HawkTypingVideo} autoPlay muted loop className="hidden md:block w-12 h-12 rounded-full shadow-md" />
                             <l-mirage
                                 size="60"
                                 speed="2.5" 
                                 color="#041e41"></l-mirage>
                         </div>)
                     : (<div className={`flex ${content.boxOwner=="user" && "flex-row-reverse"}`}>
-                        {content.boxOwner=="bot"
-                            ? <video src={HawkTypingVideo} autoPlay muted className="hidden md:block w-12 h-12 rounded-full shadow-md" />
-                            : <img src={UserProfile} className="p-1 w-8 h-8 rounded-full bg-white shadow-md"/>
-                        }
+                        {content.boxOwner!="bot" && <img src={UserProfile} className="p-1 w-8 h-8 rounded-full bg-white shadow-md"/>}
                         <div>
                                     <div className="px-4 text-justify ">
                                         {
