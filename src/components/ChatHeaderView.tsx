@@ -1,6 +1,9 @@
 import MenuView from "./MenuView";
+import HumberLogo from "../assets/Humber-logo.svg";
 
-const ChatHeaderView: React.FC<{ clearChatHandler: () => void }> = ({clearChatHandler}) => {
+const ChatHeaderView: React.FC<{ clearChatHandler: () => void, chatLogsLengthState: number }> 
+= ({clearChatHandler, chatLogsLengthState}) => {
+
     return (
         <div className="
         py-2
@@ -11,8 +14,10 @@ const ChatHeaderView: React.FC<{ clearChatHandler: () => void }> = ({clearChatHa
         flex
         justify-start
         items-center
+        shadow-sm
+        shadow-black
         ">
-            <div className="relative">
+            <div className="relative md:ml-[10%]">
                 <div className="
                 absolute 
                 bottom-0
@@ -22,8 +27,13 @@ const ChatHeaderView: React.FC<{ clearChatHandler: () => void }> = ({clearChatHa
                 border-[#041e41]
                 bg-green-500 
                 rounded-full"></div>
-                <img src="https://widget-assets.geckochat.io/5dcf2cdafbfce81a9fd8f1db006787f3.png"
+                <img src={`${
+                    chatLogsLengthState > 1 
+                    ? "https://widget-assets.geckochat.io/5dcf2cdafbfce81a9fd8f1db006787f3.png"
+                    : HumberLogo
+                }`}
                 className="
+                animate-flip-in
                 mx-3
                 size-12
                 rounded-full"/>

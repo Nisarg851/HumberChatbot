@@ -1,7 +1,20 @@
-# React + TypeScript + Vite
+## Required Dependencies
+- [Node](https://nodejs.org/en) (v20.15.0 recommended)
+- [git](https://git-scm.com/downloads)
+- [pnpm](https://pnpm.io/installation) (v8.5.1 recommended)
+  - usually node comes with npm, if so, use `npm install pnpm`
+  
+## Steps to setup
+- Clone this repository using <br>`git clone https://github.com/Nisarg851/HumberChatbot.git`
+- Move into project folder
+- run `pnpm install` to install all the required dependencies.
+- run `pnpm run dev` to run the application in developer mode.
+  
+<br>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> ***Note:** At this point the project should be ready, below information is only for exploration (provided by Vite) and isn't necessary for project setup!*
 
+## React + TypeScript + Vite 
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh

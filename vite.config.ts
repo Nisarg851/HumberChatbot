@@ -5,4 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: "/HumberChatbot/",
   plugins: [react()],
+  build: {
+    minify: true,
+    rollupOptions: {
+      treeshake: false
+    }
+  }
 })
